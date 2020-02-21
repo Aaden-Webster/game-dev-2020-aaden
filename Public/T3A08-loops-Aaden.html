@@ -23,8 +23,12 @@ for (let myX=0; myX<=document.getElementById('Text1').value; myX++){
   if (myX %2 == 1){
     document.getElementById('Div1').innerHTML += '<font color=blue>, Odd</font>'
   }
- 
-  if (myX >= 9){
+
+  if (myX == 9){
+    document.getElementById('Div1').innerHTML += ', Equal to 9'
+  }
+
+  if (myX >= 10){
     document.getElementById('Div1').innerHTML += ', Greater then 9'
   }
 
