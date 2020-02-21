@@ -1,0 +1,35 @@
+<h1 align=center>T3A08 Loops by Aaden</h1>
+
+<input id="Text1" type=text value="20">
+
+<input type="button" value="Decisions" onclick="{
+ document.getElementById('Div1').innerHTML =''
+
+for (let myX=0; myX<=document.getElementById('Text1').value; myX++){
+  document.getElementById('Div1').innerHTML += '<br>Loop: '+ myX
+
+  if (myX == 3){
+    document.getElementById('Div1').innerHTML += ', Thats a three'
+  }
+
+  else if (myX == 5){
+    document.getElementById('Div1').innerHTML += ', Thats a five'
+  }
+
+  else if (myX == 8){
+    document.getElementById('Div1').innerHTML += ', Thats a eight'
+  }
+
+  if (myX %2 == 1){
+    document.getElementById('Div1').innerHTML += '<font color=blue>, Odd</font>'
+  }
+ 
+  if (myX >= 9){
+    document.getElementById('Div1').innerHTML += ', Greater then 9'
+  }
+
+ }
+
+}">
+
+<i><div id="Div1">...</div></i>
