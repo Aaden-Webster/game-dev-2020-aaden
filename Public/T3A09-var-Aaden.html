@@ -1,0 +1,48 @@
+<html>
+<body>
+
+<button onclick="displayInt()">What is myInt variable?</button>
+
+ <p id="Int"></p><br>
+
+<button onclick="displayDec()">What is myDec variable?</button><br>
+
+ <p id="Dec"></p><br>
+
+<button onclick="displayName()">What is MyName variable?></button><br>
+
+ <p id="Name"></p><br>
+
+<p>The full length of the Abc's using the string length property</p>
+
+ <p id="Str"></p>
+
+
+<script>
+function displayInt() {
+  document.getElementById("Int").innerHTML = myInt;
+}
+
+function displayDec() {
+  document.getElementById("Dec").innerHTML = myDec;
+}
+
+function displayName() {
+  document.getElementById("Name").innerHTML = myName;
+}
+
+  let myInt = 3
+  let myDec = 67.4
+  let myName='Aaden'
+  let Str = "abcdefghijklmnopqrstuvwxyz";
+   document.getElementById("Str").innerHTML = Str.length;
+  
+  
+</script>
+
+
+
+</body>
+</html>
+
+
