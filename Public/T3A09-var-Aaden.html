@@ -1,6 +1,8 @@
 <html>
 <body>
+<h1 align=center>T3A09 Variables by Aaden</h1>
 
+<div>
 <button onclick="displayInt()">What is myInt variable?</button>
 
  <p id="Int"></p><br>
@@ -17,6 +19,8 @@
 
  <p id="Str"></p>
 
+ <p id="Ary"></p>
+</div>
 
 <script>
 function displayInt() {
@@ -37,8 +41,28 @@ function displayName() {
   let Str = "abcdefghijklmnopqrstuvwxyz";
    document.getElementById("Str").innerHTML = Str.length;
   
-  
+  let myArray = [];
+  myArray[0] = "Babeba";
+  myArray[1] = "Joe";
+   document.getElementById("Ary").innerHTML = myArray[0] + " " + myArray.length;
 </script>
+<style>
+ div {
+  background-color: lightgrey; 
+  width: 400px;
+  border: 5px solid green;
+  padding: 8px;
+  margin: 5px; 
+}
+ h1 {
+  background-color: lightgrey; 
+  width: 1000px;
+  position: center; 
+  border: 5px solid green;
+  padding: 8px;
+  margin: 5px; 
+}
+</style>
 
 
 
