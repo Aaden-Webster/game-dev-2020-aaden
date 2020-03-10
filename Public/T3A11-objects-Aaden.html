@@ -1,0 +1,76 @@
+<h2 align="center">T3A11 Objects by Aaden</h2>
+
+<input id="Text1" type=text value="Babeba">
+
+<input type="button" value="Show Object" onclick="{
+
+ myObject = {
+  'myName' : document.getElementById('Text1').value,
+  'myAge' : '1000000',
+  'myEyes' : 'red',
+}
+
+  document.getElementById('Div1').innerHTML = myObject.myName + ' is ' + myObject.myAge + ' years old, and has ' + myObject.myEyes + ' eyes. '
+
+ }">
+
+<div id="Div1">...</div>
+
+<hr><br><br>
+
+<input id="Text2" type=text value="Array Stuff">
+
+<input type="button" value="Show" onclick="{
+
+  myArray = [4, 7, 3, 8];
+  myArray[0] = 4;
+  myArray[1] = 7;
+  myArray[2] = 3;
+  myArray[3] = 8;
+
+ document.getElementById('Div2').innerHTML = myArray[0] + ' , ' + myArray[1] + ' , ' +  myArray[2] + ' , ' + myArray[3]
+
+  }">
+
+<div id="Div2">...</div><br><br>
+
+<input id="Text3" type=text value="Object Array Stuff">
+
+<input type="button" value="Show" onclick="{
+
+   myObject = [30, 20]
+   
+   document.getElementById('Div3').innerHTML = myObject[0] + ' , ' + myObject[1]
+
+
+}">
+
+
+<div id="Div3">...</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
