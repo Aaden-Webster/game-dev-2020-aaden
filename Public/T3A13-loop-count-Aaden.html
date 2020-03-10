@@ -1,0 +1,27 @@
+<h1 align=center>T3A08 Loop count by Aaden</h1>
+
+<input id="Text1" type=text value="5">
+
+<input type="button" value="Decisions" onclick="{
+ document.getElementById('Div1').innerHTML =''
+
+for (let myX=0; myX<=document.getElementById('Text1').value; myX++){
+  document.getElementById('Div1').innerHTML += myX
+
+  if (myX == 0){
+    document.getElementById('Div1').innerHTML += '<br>'
+  }
+
+  else if (myX == 2){
+    document.getElementById('Div1').innerHTML += '<br>'
+  }
+  
+  else if (myX == 5){
+    document.getElementById('Div1').innerHTML += '<br>'
+  }
+
+}
+
+}">
+
+<i><div id="Div1">...</div></i>

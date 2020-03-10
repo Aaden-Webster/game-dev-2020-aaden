@@ -1,0 +1,25 @@
+<body onkeydown="{
+   document.all.Text1.value = event.key
+  
+  if (event.key == 'd') {  // d = go right
+    document.getElementById('Image1').style.left = parseInt(document.getElementById('Image1').style.left) + 20 + 'px'
+  }
+  if (event.key == 's') {  // s = go down      
+    document.getElementById('Image1').style.top = parseInt(document.getElementById('Image1').style.top) + 20 + 'px'
+  }
+  if (event.key == 'a') {  // a = go left
+    document.getElementById('Image1').style.left = parseInt(document.getElementById('Image1').style.left) - 20 + 'px'
+  }
+  if (event.key == 'w') {  // w = go top
+    document.getElementById('Image1').style.top = parseInt(document.getElementById('Image1').style.top) - 20 + 'px'
+  }
+}">
+
+
+<h2 align=center>T3A13 WASD onKeyDown by Aaden</h2>
+
+<input id="Text1" type=text value=0 size=6 ><br>
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Prim_Maze.svg/1200px-Prim_Maze.svg.png" id="Image2" style="Postition:relative; z-index:-1; left:0px; top:0px; height:1000px; width:860;">
+
+<img src="C:\Users\1234875\Downloads\steve-jobs-360959.png" id="Image1" style="position:relative; z-index:-1; left:-75px; top:0px; height:30px; width:15px;">
