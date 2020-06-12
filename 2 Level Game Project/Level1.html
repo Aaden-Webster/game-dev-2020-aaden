@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name = "viewport" content = "width=device-width">
+    <link href = "game.css" rel = "stylesheet" type = "text/css">
+
+<title>Level 1</title>
+
+
+<script> 
+//Global variables here
+
+myBgPosY = 0;     // present vertical position
+myBgPosX = 0;    // present horizonal position
+myBgHeight = 402;    // height of background image
+myBgWidth = 753;  // width of background image
+myBgSpeedYdown = 1;    // speed moving down 
+myBgSpeedXright = 0;    // speed moving right
+
+
+
+<!-- ********************  Background Scrolling **************************  -->
+
+// myScroll function controls the moving of the background image
+
+function myScroll() {
+
+   myAuto()
+   checkAll()
+
+
+   myBgPosY +=  myBgSpeedYdown;
+   if (myBgPosY > myBgHeight) {myBgPosY = 0}
+   if (myBgPosY <0) {myBgPosY = myBgHeight}
+
+   myBgPosX +=  myBgSpeedXright;
+   if (myBgPosX > myBgWidth) {myBgPosX = 0}
+   if (myBgPosX <0) {myBgPosX = myBgWidth}
+
+
+   myBgObject.style.backgroundPosition = myBgPosX+" " + myBgPosY;
+}
+
+
+
+
+<!-- ********************  Object Detection Starts below **************************  -->
+
+// myHitXY function determines if any object has hit an x, y location. Note it is better to use the myHitOther function
+ 
+function myHitXY(my1,X,Y){
+
+   left1  = parseInt(document.getElementById(my1).style.left)
+   right1   = left1 + parseInt(document.getElementById(my1).style.width)
+
+   top1    = parseInt(document.getElementById(my1).style.top)   
+   bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
+
+   document.getElementById('myShowDiv1').innerHTML = right1  +', '+ left1  +', '+   top1   +', '+  bottom1
+
+   if ((left1   <= X ) &&      	   
+       (right1  >= X ) &&
+       (top1    <= Y ) &&
+       (bottom1 >= Y ) ){
+       return true
+   }
+}
+
+
+
+// myHitOther function determines if two obejcts have hit each other. 
+
+function myHitOther(my1,my2){
+
+
+   left1   = parseInt(document.getElementById(my1).style.left)
+   right1  = left1 + parseInt(document.getElementById(my1).style.width)
+   top1    = parseInt(document.getElementById(my1).style.top)   
+   bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
+
+
+   left2   = parseInt(document.getElementById(my2).style.left)
+   right2  = left2 + parseInt(document.getElementById(my2).style.width)
+   top2    = parseInt(document.getElementById(my2).style.top)   
+   bottom2 = top2   + parseInt(document.getElementById(my2).style.height)
+
+
+
+   if ((right1  >=  left2  ) &&      	   
+       (bottom1 >=  top2   ) &&
+       (left1   <=  right2 ) &&
+       (top1    <=  bottom2) ){
+       return true
+   }
+}
+
+
+
+// Group all your detection code here
+ 
+function checkAll(){
+ 
+  if (myHitXY('move1',200,280)) {
+    document.getElementById('myShowDiv3').innerHTML = 'You hit the red dot'
+  } else {document.getElementById('myShowDiv3').innerHTML = ''}
+ 
+  if (myHitOther('move1','move2')) {
+      document.getElementById('myShowDiv3').innerHTML = 'You hit object move2'
+  }
+
+
+  if (myHitOther('bullet1','move2')) {
+      document.getElementById('myShowDiv3').innerHTML = 'The bullet hit move 2'
+      document.getElementById('bullet1').style.visibility  = 'hidden'
+      document.getElementById('bullet1').style.left  = '-200px'
+      clearInterval(document.myShot)
+
+  }
+
+
+// Function showing buttons that control your character
+
+
+
+// just shows where your two objects are to help with debugging
+
+   document.getElementById('myShowDiv1').innerHTML = left1  +', '+ right1  +', '+   top1   +', '+  bottom1
+   document.getElementById('myShowDiv2').innerHTML = left2  +', '+ right2  +', '+   top2   +', '+  bottom2
+
+}
+ 
+
+ 
+
+
+<!-- ********************  Object Detection  finished **************************  -->
+<!-- ********************  Object Motion Below **************************  -->
+
+
+
+
+document.mySpeedX = 0;
+document.mySpeedY = 0;
+
+function myAuto(){
+
+  if(parseInt(document.getElementById('move1').style.left) > window.innerWidth - document.getElementById('move1').width){
+       document.mySpeedX *= -1
+   }
+
+  document.getElementById('move1').style.left = parseInt(document.getElementById('move1').style.left)+document.mySpeedX+'px'
+  document.getElementById('move1').style.top  = parseInt(document.getElementById('move1').style.top)+document.mySpeedY+'px'
+
+}
+
+
+function myGunPrep(){
+
+    document.getElementById('bullet1').style.visibility  = 'visible'
+    document.getElementById('bullet1').style.left  = document.getElementById('move1').style.left
+    document.getElementById('bullet1').style.top   = document.getElementById('move1').style.top
+    
+   clearInterval(document.myShot)
+   document.myShot = setInterval('myGun()', 30) // calls the function every 30 mille seconds
+
+}
+
+
+function myGun(){
+
+    document.getElementById('bullet1').style.left  = parseInt(document.getElementById('bullet1').style.left) + 20 + 'px'
+
+}
+
+</script>
+
+</head>
+
+
+
+<!-- ********************  Here the webpage begins **************************  -->
+
+
+
+
+<!-- ********************  onkeypress just for webpages is useless on mobile apps **************************  -->
+
+<body onload="startGame()">
+
+<img id="background01" width="0.1" height="0.1" src="Level1.png" alt="Background" >
+
+<input id="Button" type=button value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('move1').style.left = parseInt(document.getElementById('move1').style.left) + 12 + 'px'
+    myCheckHit()     // checks for all collisions
+  }">
+  
+  <input id="Button" type=button value="Left" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('move1').style.top = parseInt(document.getElementById('move1').style.top) + 12 + 'px'
+    myCheckHit()     // checks for all collisions
+  }">
+
+<input id="Button" type=button value="Up" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('move1').style.left = parseInt(document.getElementById('move1').style.left) + -12 + 'px'
+    myCheckHit()     // checks for all collisions
+  }">
+  
+  <input id="Button" type=button value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('move1').style.top = parseInt(document.getElementById('move1').style.top) + -12 + 'px'
+    myCheckHit()     // checks for all collisions
+  }">
+
+<canvas id="myCanvas" width="1536" height="864" style="border:1px solid #000000"></canvas>
+</canvas>
+
+<script>        // This object must be after the body tag
+
+myBgObject = eval('document.body');
+
+window.onload = function() {
+  var c = document.getElementById("myCanvas");
+  var ctx = c.getContext("2d");
+  var img = document.getElementById("background01");
+  ctx.drawImage(img, 10, 10);
+}
+
+function myCheckHit(){
+
+if ( myHitOther('move1','move2') ){
+    alert('"Where do you think your going Bill?"')
+   location = "Level1.html"
+}   
+
+if ( myHitOther('move1','move3') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move4') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+ 
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move5') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move6') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+
+if ( myHitOther('move1','move7') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move8') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+ 
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move9') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move10') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+  
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move11') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move12') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+  
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move13') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move14') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move15') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move16') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+  
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move17') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move18') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move19') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move20') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move21') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+ 
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move22') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+  
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move23') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+  
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move24') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move25') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move26') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+  
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move27') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move28') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move29') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move30') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move31') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move32') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+  
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move33') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move34') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move35') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move36') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move37') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move38') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move39') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move40') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move41') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move42') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move43') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move44') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move45') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move46') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move47') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move48') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move49') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move50') ){
+    alert('Guess Bill forgot that all the walls suck in anyone even by the touch of their cloth by the slightest centameter.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move51') ){
+    alert('"You trying to leave? Ooh Bill, you already know we cant let you do that.."')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move52') ){
+    alert('Bill found a hole in the wall, and it seems that he had found a another Bill, Bill Gates. Gates was crouching on the floor eating his apple devices, until he saw Bill, that was the last we heard of Bill..')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move53') ){
+    alert('It seems Bill is kinda stupid and fell into a hole that was clearly visable, Ooh Bill.')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move54') ){
+    alert('Bill decided to walk into a huge amount of webs of poisionous spiders, Bill soon was biten hundreds of times, but he will get in the swing of things again soon..Hopefully. ')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move55') ){
+    alert('Bill has found a grape on the concrete floor..Thats uh kinda it..Its..Its a grape.')
+}   
+
+if ( myHitOther('move1','move56') ){
+    alert('Bill was stopped by the Oka Oka Clan. They just stood there with their weak legs and arms until they shot Bill with a sleeping dart. Guess Bill cant pass through here..Has the wall always been like that?')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move57') ){
+    alert('Bill was stopped by the Oka Oka Clan. They just stood there with their weak legs and arms until they shot Bill with a sleeping dart. Guess Bill cant pass through here..')
+   
+   location = 'Level1.html'
+}   
+
+if ( myHitOther('move1','move58') ){
+    alert('"Ooh Bill, you try so hard but cant succeed, Youve now found yourself in a tight situation, that im gonna have to fix Bill. You left me no choice.." Bill soon faced the wrath of god, one snap, and he was punished for his actions for trying to cheat the system..Sorry Bill.')
+   
+   location = 'Level1.html'
+}   
+
+
+
+// YOU WIN and go to next level!
+if ( myHitOther('move1','move100') ){
+    alert('Bill actually made it, Thats actually bunckers')
+   location = 'Level2.html'
+}
+
+// more if statements here
+
+
+// checking for window boundaries
+
+if( parseInt(document.getElementById('move1').style.left) > window.innerWidth - document.getElementById('move1').width ){
+    document.getElementById('move1').style.left = '10px'
+}
+
+
+
+
+}
+
+</script>
+
+
+
+
+
+
+<!-- ********************  Some instructions that magically disappear **************************  -->
+
+<div id="myInstructions" onclick="document.getElementById('myInstructions').style.visibility = 'hidden'" style="visibility:visible; width:500px; background-color:grey">
+<ol>Heads Up:
+<li> This game is hard..
+<li> All for Jokes..
+<li> This game is made to mess with you..
+<li> Have Fun!
+</ol>
+Click to hide.
+</div><br>
+ 
+
+
+
+
+
+
+<!-- ********************  Following should be all your images **************************  -->
+
+
+
+<img  id="move1"  src="Player.png"  style="position:absolute; width:30px; height:30px; left:100px; top:145px"/>  
+ 
+<img  id="move2"  src="Troll.png" style="position:absolute; width:30px; height:30px;  left:500px; top:1px;"/>
+
+<img  id="move3"  src="myImgNew.jpg" style="position:absolute; width:220px; height:10px;  left:10px; top:236px; visibility: hidden; background-color:red;"/>
+
+<img  id="move4"  src="myImgNew.jpg" style="position:absolute; width:10px; height:50px;  left:225px; top:195px; visibility: hidden; background-color:red;"/>
+
+<img  id="move5"  src="myImgNew.jpg" style="position:absolute; width:170px; height:10px;  left:225px; top:195px; visibility: hidden; background-color:red;"/>
+
+<img  id="move6"  src="myImgNew.jpg" style="position:absolute; width:10px; height:195px;  left:385px; top:195px; visibility: hidden; background-color:red;"/>
+
+<img  id="move7"  src="myImgNew.jpg" style="position:absolute; width:300px; height:10px;  left:90px; top:380px; visibility: hidden;  background-color:red;"/>
+
+<img  id="move8"  src="myImgNew.jpg" style="position:absolute; width:10px; height:76px;  left:85px; top:380px; visibility: hidden; background-color:red;"/>
+
+<img  id="move9"  src="myImgNew.jpg" style="position:absolute; width:80px; height:10px;  left:85px; top:450px; visibility: hidden; background-color:red;"/>
+
+<img  id="move10"  src="myImgNew.jpg" style="position:absolute; width:10px; height:175px;  left:155px; top:450px; visibility: hidden; background-color:red;"/>
+
+<img  id="move11"  src="myImgNew.jpg" style="position:absolute; width:125px; height:10px;  left:155px; top:620px; visibility: hidden; background-color:red;"/>
+
+<img  id="move12"  src="myImgNew.jpg" style="position:absolute; width:10px; height:195px;  left:270px; top:620px; visibility: hidden; background-color:red;"/>
+
+<img  id="move13"  src="myImgNew.jpg" style="position:absolute; width:945px; height:10px;  left:270px; top:805px; visibility: hidden; background-color:red;"/>
+
+<img  id="move14"  src="myImgNew.jpg" style="position:absolute; width:115px; height:10px;  left:1210px; top:817px; visibility: hidden; background-color:red;"/>
+
+<img  id="move15"  src="myImgNew.jpg" style="position:absolute; width:10px; height:57px;  left:1315px; top:817px; visibility: hidden; background-color:red;"/>
+
+<img  id="move16"  src="myImgNew.jpg" style="position:absolute; width:230px; height:10px;  left:1315px; top:865px; visibility: hidden; background-color:red;"/>
+
+<img  id="move17"  src="myImgNew.jpg" style="position:absolute; width:230px; height:10px;  left:1315px; top:720px; visibility: hidden; background-color:red;"/>
+
+<img  id="move18"  src="myImgNew.jpg" style="position:absolute; width:10px; height:40px;  left:1315px; top:720px; visibility: hidden; background-color:red;"/>
+
+<img  id="move19"  src="myImgNew.jpg" style="position:absolute; width:50px; height:10px;  left:1275px; top:750px; visibility: hidden; background-color:red;"/>
+
+<img  id="move20"  src="myImgNew.jpg" style="position:absolute; width:10px; height:105px;  left:1275px; top:650px; visibility: hidden; background-color:red;"/>
+
+<img  id="move21"  src="myImgNew.jpg" style="position:absolute; width:275px; height:10px;  left:1000px; top:650px; visibility: hidden; background-color:red;"/>
+
+<img  id="move22"  src="myImgNew.jpg" style="position:absolute; width:10px; height:40px;  left:1000px; top:615px; visibility: hidden; background-color:red;"/>
+
+<img  id="move23"  src="myImgNew.jpg" style="position:absolute; width:125px; height:10px;  left:1000px; top:615px; visibility: hidden; background-color:red;"/>
+
+<img  id="move24"  src="myImgNew.jpg" style="position:absolute; width:10px; height:110px;  left:1115px; top:510px; visibility: hidden; background-color:red;"/>
+
+<img  id="move25"  src="myImgNew.jpg" style="position:absolute; width:100px; height:10px;  left:1115px; top:510px; visibility: hidden; background-color:red;"/>
+
+<img  id="move26"  src="myImgNew.jpg" style="position:absolute; width:10px; height:325px;  left:1210px; top:195px; visibility: hidden; background-color:red;"/>
+
+<img  id="move27"  src="myImgNew.jpg" style="position:absolute; width:170px; height:10px;  left:1050px; top:190px; visibility: hidden; background-color:red;"/>
+
+<img  id="move28"  src="myImgNew.jpg" style="position:absolute; width:10px; height:75px;  left:1050px; top:122px; visibility: hidden; background-color:red;"/>
+
+<img  id="move29"  src="myImgNew.jpg" style="position:absolute; width:835px; height:45px;  left:225px; top:85px; visibility: hidden; background-color:red;"/>
+
+<img  id="move30"  src="myImgNew.jpg" style="position:absolute; width:165px; height:165px;  left:455px; top:130px; visibility: hidden; background-color:red;"/>
+
+<img  id="move31"  src="myImgNew.jpg" style="position:absolute; width:40px; height:80px;  left:455px; top:265px; visibility: hidden; background-color:red;"/>
+
+<img  id="move32"  src="myImgNew.jpg" style="position:absolute; width:40px; height:80px;  left:582px; top:265px; visibility: hidden; background-color:red;"/>
+
+<img  id="move33"  src="myImgNew.jpg" style="position:absolute; width:165px; height:155px;  left:455px; top:405px; visibility: hidden; background-color:red;"/>
+
+<img  id="move34"  src="myImgNew.jpg" style="position:absolute; width:60px; height:255px;  left:685px; top:190px; visibility: hidden; background-color:red;"/>
+
+<img  id="move35"  src="myImgNew.jpg" style="position:absolute; width:65px; height:235px;  left:685px; top:510px; visibility: hidden; background-color:red;"/>
+
+<img  id="move36"  src="myImgNew.jpg" style="position:absolute; width:370px; height:45px;  left:685px; top:510px; visibility: hidden; background-color:red;"/>
+
+<img  id="move37"  src="myImgNew.jpg" style="position:absolute; width:115px; height:125px;  left:570px; top:620px; visibility: hidden; background-color:red;"/>
+
+<img  id="move38"  src="myImgNew.jpg" style="position:absolute; width:165px; height:125px;  left:340px; top:620px; visibility: hidden; background-color:red;"/>
+
+<img  id="move39"  src="myImgNew.jpg" style="position:absolute; width:125px; height:130px;  left:815px; top:615px; visibility: hidden; background-color:red;"/>
+
+<img  id="move40"  src="myImgNew.jpg" style="position:absolute; width:350px; height:28px;  left:865px; top:717px; visibility: hidden; background-color:red;"/>
+
+<img  id="move41"  src="myImgNew.jpg" style="position:absolute; width:60px; height:110px;  left:807px; top:335px; visibility: hidden; background-color:red;"/>
+
+<img  id="move42"  src="myImgNew.jpg" style="position:absolute; width:170px; height:110px;  left:930px; top:335px; visibility: hidden; background-color:red;"/>
+
+<img  id="move43"  src="myImgNew.jpg" style="position:absolute; width:100px; height:77px;  left:1050px; top:260px; visibility: hidden; background-color:red;"/>
+
+<img  id="move44"  src="myImgNew.jpg" style="position:absolute; width:100px; height:20px;  left:1050px; top:425px; visibility: hidden; background-color:red;"/>
+
+<img  id="move45"  src="myImgNew.jpg" style="position:absolute; width:40px; height:80px;  left:812px; top:190px; visibility: hidden; background-color:red;"/>
+
+<img  id="move46"  src="myImgNew.jpg" style="position:absolute; width:175px; height:29px;  left:812px; top:245px; visibility: hidden; background-color:red;"/>
+
+<img  id="move47"  src="myImgNew.jpg" style="position:absolute; width:40px; height:80px;  left:945px; top:190px; visibility: hidden; background-color:red;"/>
+
+<img  id="move48"  src="myImgNew.jpg" style="position:absolute; width:40px; height:110px;  left:225px; top:450px; visibility: hidden; background-color:red;"/>
+
+<img  id="move49"  src="myImgNew.jpg" style="position:absolute; width:40px; height:110px;  left:352px; top:450px; visibility: hidden; background-color:red;"/>
+
+<img  id="move50"  src="myImgNew.jpg" style="position:absolute; width:130px; height:30px;  left:225px; top:450px; visibility: hidden; background-color:red;"/>
+
+<img  id="move51"  src="myImgNew.jpg" style="position:absolute; width:10px; height:115px;  left:20px; top:90px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move52"  src="myImgNew.jpg" style="position:absolute; width:100px; height:100px;  left:490px; top:210px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move53"  src="myImgNew.jpg" style="position:absolute; width:50px; height:50px;  left:625px; top:450px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move54"  src="myImgNew.jpg" style="position:absolute; width:55px; height:90px;  left:870px; top:345px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move55"  src="myImgNew.jpg" style="position:absolute; width:30px; height:30px;  left:880px; top:195px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move56"  src="myImgNew.jpg" style="position:absolute; width:65px; height:60px;  left:750px; top:685px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move57"  src="myImgNew.jpg" style="position:absolute; width:60px; height:65px;  left:1055px; top:510px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move58"  src="myImgNew.jpg" style="position:absolute; width:325px; height:340px;  left:1220px; top:260px; visibility: hidden; background-color:purple;"/>
+
+<img  id="move100"  src="myImgNew.jpg" style="position:absolute; width:100px; height:100px;  left:1395px; top:755px; visibility: hidden; background-color:green;"/>
+
+<!-- ********************  Now all the buttons. Note: ontouchstart is faster than onclick  **************************  -->
+
+
+
+
+
+
+<!-- ********************  General game output **************************  -->
+
+
+
+<br><br>
+
+<input type=button value="Back" style="font-size:25px" onclick="{window.history.back()}"><br><br>
+
+
+</body>
+</html>
