@@ -1,0 +1,30 @@
+body {
+  background-color:#202830;
+}
+
+html { height:100%; width:100%; }
+
+
+#move2 {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes example {
+  0%   {left:410px; top:360px;}
+  25%  {left:635px; top:360px;}
+  50%  {left:635px; top:572px;}
+  75%  {left:410px; top:572px;}
+  100% {left:410px; top:360px;}
+}
+
+#Button {
+  width: 60px;
+  height: 65px;
+  position: relative;
+}
+
