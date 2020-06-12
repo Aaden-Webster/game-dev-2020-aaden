@@ -21,33 +21,6 @@ myBgSpeedXright = 0;    // speed moving right
 
 
 
-<!-- ********************  Background Scrolling **************************  -->
-
-// myScroll function controls the moving of the background image
-
-function myScroll() {
-
-   myAuto()
-   checkAll()
-
-
-   myBgPosY +=  myBgSpeedYdown;
-   if (myBgPosY > myBgHeight) {myBgPosY = 0}
-   if (myBgPosY <0) {myBgPosY = myBgHeight}
-
-   myBgPosX +=  myBgSpeedXright;
-   if (myBgPosX > myBgWidth) {myBgPosX = 0}
-   if (myBgPosX <0) {myBgPosX = myBgWidth}
-
-
-   myBgObject.style.backgroundPosition = myBgPosX+" " + myBgPosY;
-}
-
-
-
-
-<!-- ********************  Object Detection Starts below **************************  -->
-
 // myHitXY function determines if any object has hit an x, y location. Note it is better to use the myHitOther function
  
 function myHitXY(my1,X,Y){
@@ -120,9 +93,6 @@ function checkAll(){
   }
 
 
-// Function showing buttons that control your character
-
-
 
 // just shows where your two objects are to help with debugging
 
@@ -131,13 +101,6 @@ function checkAll(){
 
 }
  
-
- 
-
-
-<!-- ********************  Object Detection  finished **************************  -->
-<!-- ********************  Object Motion Below **************************  -->
-
 
 
 
@@ -155,24 +118,6 @@ function myAuto(){
 
 }
 
-
-function myGunPrep(){
-
-    document.getElementById('bullet1').style.visibility  = 'visible'
-    document.getElementById('bullet1').style.left  = document.getElementById('move1').style.left
-    document.getElementById('bullet1').style.top   = document.getElementById('move1').style.top
-    
-   clearInterval(document.myShot)
-   document.myShot = setInterval('myGun()', 30) // calls the function every 30 mille seconds
-
-}
-
-
-function myGun(){
-
-    document.getElementById('bullet1').style.left  = parseInt(document.getElementById('bullet1').style.left) + 20 + 'px'
-
-}
 
 </script>
 
@@ -735,15 +680,6 @@ Click to hide.
 <img  id="move58"  src="myImgNew.jpg" style="position:absolute; width:325px; height:340px;  left:1220px; top:260px; visibility: hidden; background-color:purple;"/>
 
 <img  id="move100"  src="myImgNew.jpg" style="position:absolute; width:100px; height:100px;  left:1395px; top:755px; visibility: hidden; background-color:green;"/>
-
-<!-- ********************  Now all the buttons. Note: ontouchstart is faster than onclick  **************************  -->
-
-
-
-
-
-
-<!-- ********************  General game output **************************  -->
 
 
 
